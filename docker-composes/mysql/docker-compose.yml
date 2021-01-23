@@ -1,7 +1,8 @@
 version: '3.3'
 services:
   db:
-    image: mysql:8.0.23
+    image: mysql:5.6.51
+    command: --lower-case-table-names=1
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
