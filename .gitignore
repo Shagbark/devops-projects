@@ -1,2 +1,5 @@
 .DS_Store
 .idea
+docker-compose/kafka/kafka
+docker-compose/kafka/zoo
+docker-compose/kafka/kafka_server_jass.conf
