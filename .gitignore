@@ -3,3 +3,5 @@
 docker-compose/kafka/kafka
 docker-compose/kafka/zoo
 docker-compose/kafka/kafka_server_jass.conf
+docker-compose/cassandra/out
+docker-compose/cassandra/cassandra

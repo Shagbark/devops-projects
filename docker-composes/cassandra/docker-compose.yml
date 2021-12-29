@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  cassandra:
+    image: cassandra:4.0.1
+    container_name: cassandra
+    environment:
+      - "MAX_HEAP_SIZE=256M"
+      - "HEAP_NEWSIZE=128M"
+    ports:
+        - "9042:9042"
+    volumes:
+      - ./cassandra/config/collectd.cassandra.conf:/etc/collectd/collectd.conf
+      - ./out/cassandra_data:/var/lib/cassandra
+
+  cqlsh:
+    image: cassandra:4.0.1
+    container_name: cassandra-cqlsh
+    entrypoint: cqlsh cassandra
+    depends_on:
+      - cassandra
+    volumes:
+      - ./cassandra/schema.cql:/schema.cql
