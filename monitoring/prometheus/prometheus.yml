@@ -11,7 +11,15 @@ scrape_configs:
   - job_name: 'prometheus'
 
     # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'
+    static_configs:
+      - targets: ['localhost:9090']
+ 
+  - job_name: 'icb-usage-service'
+
+    # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
+    metrics_path: /actuator/prometheus
 
     static_configs:
       - targets: ['localhost:9090']

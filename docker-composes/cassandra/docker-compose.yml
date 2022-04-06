@@ -1,22 +1,78 @@
 version: '3.9'
 services:
-  cassandra:
+  cassandra-node-1:
     image: cassandra:4.0.1
-    container_name: cassandra
+    container_name: cassandra-node-1
+    networks:
+      datacenter1ring:
+        ipv4_address: 172.30.0.2
     environment:
-      - "MAX_HEAP_SIZE=256M"
-      - "HEAP_NEWSIZE=128M"
+      - MAX_HEAP_SIZE=256M
+      - HEAP_NEWSIZE=128M
+      - SEEDS=cassandra-node-1
+      - CASSANDRA_SEEDS=cassandra-node-1
+      - DC=datacenter1
+      - CLUSTER_NAME=cassandra_cluster
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9142 
     ports:
-        - "9042:9042"
-    volumes:
-      - ./cassandra/config/collectd.cassandra.conf:/etc/collectd/collectd.conf
-      - ./out/cassandra_data:/var/lib/cassandra
+        - 9042:9042
 
-  cqlsh:
+  cassandra-node-2:
     image: cassandra:4.0.1
-    container_name: cassandra-cqlsh
-    entrypoint: cqlsh cassandra
+    container_name: cassandra-node-2
+    networks:
+      datacenter1ring:
+        ipv4_address: 172.30.0.3
+    environment:
+      - MAX_HEAP_SIZE=256M
+      - HEAP_NEWSIZE=128M
+      - SEEDS=cassandra-node-1
+      - CASSANDRA_SEEDS=cassandra-node-1
+      - DC=datacenter1
+      - CLUSTER_NAME=cassandra_cluster
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9142 
+    ports:
+        - 9043:9042
     depends_on:
-      - cassandra
-    volumes:
-      - ./cassandra/schema.cql:/schema.cql
+      - cassandra-node-1
+  
+  cassandra-node-3:
+    image: cassandra:4.0.1
+    container_name: cassandra-node-3
+    networks:
+      datacenter1ring:
+        ipv4_address: 172.30.0.4
+    environment:
+      - MAX_HEAP_SIZE=256M
+      - HEAP_NEWSIZE=128M
+      - SEEDS=cassandra-node-1
+      - CASSANDRA_SEEDS=cassandra-node-1
+      - DC=datacenter1
+      - CLUSTER_NAME=cassandra_cluster
+    expose:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9142 
+    ports:
+        - 9044:9042
+    depends_on:
+      - cassandra-node-1
+
+networks:
+    datacenter1ring:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.30.0.0/16

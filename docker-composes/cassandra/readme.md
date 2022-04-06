@@ -16,5 +16,5 @@ docker exec cassandra-1 nodetool status
 ### Enter the cqlsh
 
 ```bash
-docker exec -it cassandra-1 cqlsh
+docker exec -it cassandra-node-1 cqlsh
 ```
